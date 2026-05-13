@@ -23,4 +23,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/transactions', [DashboardController::class,'indexTransaction'])->name('transactions.index');
     Route::resource('events', EventAdminController::class);
     Route::get('/partners', [PartnerController::class, 'index'])->name('partners.index');
+    Route::get('/partners/create', [PartnerController::class, 'create'])->name('partners.create');
+    Route::post('/partners', [PartnerController::class, 'store'])->name('partners.store');
 });
