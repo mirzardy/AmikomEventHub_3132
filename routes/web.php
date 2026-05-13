@@ -14,6 +14,7 @@ Route::get('/my-ticket', [EventController::class, 'ticket'])->name('ticket');
 Route::post('/logout', function() { return redirect('/'); })->name('logout');
 
 use App\Http\Controllers\Admin\EventController as EventAdminController;
+use App\Http\Controllers\Admin\PartnerController;
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -21,4 +22,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/events', [DashboardController::class,'indexEvent'])->name('events.index');
     Route::get('/transactions', [DashboardController::class,'indexTransaction'])->name('transactions.index');
     Route::resource('events', EventAdminController::class);
+    Route::get('/partners', [PartnerController::class, 'index'])->name('partners.index');
 });
