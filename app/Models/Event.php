@@ -35,6 +35,10 @@ class Event extends Model
             return asset('storage/' . $this->poster_path);
         }
 
+        if (file_exists(public_path('assets/' . $this->poster_path))) {
+            return asset('assets/' . $this->poster_path);
+        }
+
         if (file_exists(public_path($this->poster_path))) {
             return asset($this->poster_path);
         }

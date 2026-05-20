@@ -32,9 +32,9 @@
             <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
         </div>
         <div class="hidden md:flex gap-8 font-medium">
-            <a href="#" class="text-indigo-600">Jelajahi</a>
-            <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
-            <a href="#" class="hover:text-indigo-600 transition">Tentang Kami</a>
+            <a href="{{ route('home') }}#events" class="text-indigo-600">Jelajahi</a>
+            <a href="{{ route('home') }}#category-filter" class="hover:text-indigo-600 transition">Kategori</a>
+            <a href="#about-footer" class="hover:text-indigo-600 transition">Tentang Kami</a>
         </div>
         <!-- <div class="flex gap-3">
             <button class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</button>
@@ -46,7 +46,7 @@
     @yield('content')
 
     <!-- Footer -->
-    <footer class="bg-indigo-900 text-indigo-100 py-20 px-6 mt-20">
+    <footer id="about-footer" class="bg-indigo-900 text-indigo-100 py-20 px-6 mt-20">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
             <div class="space-y-4 col-span-1">
                 <div class="flex items-center gap-2">
@@ -59,8 +59,8 @@
                     penyelenggara profesional.</p>
             </div>
             <div>
-            
-                <h4 class="text-white font-bold mb-6">Category</h4>
+
+                <h4 class="text-white font-bold mb-6">Kategori</h4>
                 <ul class="space-y-4">
                     <li><a href="/" class="hover:text-white transition">Semua Kategori</a></li>
                 @foreach($categories as $cat)

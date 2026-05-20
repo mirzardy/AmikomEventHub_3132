@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="mb-12 flex flex-wrap gap-3 justify-center items-center px-4 py-8 bg-gradient-to-r from-slate-50 to-indigo-50 rounded-2xl border border-slate-200">
+        <div id="category-filter" class="mb-12 flex flex-wrap gap-3 justify-center items-center px-4 py-8 bg-gradient-to-r from-slate-50 to-indigo-50 rounded-2xl border border-slate-200">
                 <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Filter by:</span>
                 
                 <a href="/" 
@@ -82,7 +82,7 @@
                         
                         <div class="relative overflow-hidden aspect-[3/4] bg-slate-100">
                             <img 
-                                src="{{ asset('assets/' . $event->poster_path) }}" 
+                                src="{{ $event->poster_url }}" 
                                 alt="{{ $event->title }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 onerror="this.onerror=null;this.src='https://via.placeholder.com/400x600?text=Harap+Ubah+Database';"

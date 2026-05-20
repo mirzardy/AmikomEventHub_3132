@@ -83,7 +83,7 @@
             @if($event->poster_path)
                 <div class="flex items-center gap-2 mt-3 p-3 bg-slate-50 rounded-xl border border-dashed">
                     <span class="text-xs text-slate-500 font-medium">Poster saat ini:</span>
-                    <a href="{{ asset('storage/' . $event->poster_path) }}" target="_blank" class="text-indigo-600 text-xs font-bold hover:underline flex items-center gap-1">
+                    <a href="{{ $event->poster_url }}" target="_blank" class="text-indigo-600 text-xs font-bold hover:underline flex items-center gap-1">
                         Lihat Gambar
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>

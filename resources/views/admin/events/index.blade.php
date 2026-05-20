@@ -138,7 +138,7 @@
                         </td>
                         <td class="px-8 py-6">
                             @if($event->poster_path)
-                                <img src="{{ asset('storage/' . $event->poster_path) }}" class="w-16 h-20 rounded-xl object-cover shadow-sm" alt="Poster">
+                                <img src="{{ $event->poster_url }}" class="w-16 h-20 rounded-xl object-cover shadow-sm" alt="Poster">
                             @else
                                 <img src="https://placehold.co/160x200?text=No+Image" class="w-16 h-20 rounded-xl object-cover shadow-sm">
                             @endif
