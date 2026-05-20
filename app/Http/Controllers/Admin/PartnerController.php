@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 
 class PartnerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $partners = Partner::all();
-        return view('admin.partners.index', compact('partners'));
+        $partnerSearch = $request->input('partner_search');
+
+        $partners = Partner::when($partnerSearch, function ($query) use ($partnerSearch) {
+                $query->where('name', 'LIKE', '%' . $partnerSearch . '%');
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.partners.index', compact('partners', 'partnerSearch'));
     }
 
     public function create()
@@ -36,5 +43,31 @@ class PartnerController extends Controller
         // Redirect ke daftar partner dengan pesan sukses
         return redirect()->route('admin.partners.index')
                          ->with('success', 'Partner berhasil ditambahkan!');
+    }
+
+    public function edit(Partner $partner)
+    {
+        return view('admin.partners.edit', compact('partner'));
+    }
+
+    public function update(Request $request, Partner $partner)
+    {
+        $data = $request->validate([
+            'name'     => 'required|string|max:255',
+            'logo_url' => 'nullable|url|max:255',
+        ]);
+
+        $partner->update($data);
+
+        return redirect()->route('admin.partners.index')
+                         ->with('success', 'Partner berhasil diperbarui!');
+    }
+
+    public function destroy(Partner $partner)
+    {
+        $partner->delete();
+
+        return redirect()->route('admin.partners.index')
+                         ->with('success', 'Partner berhasil dihapus!');
     }
 }

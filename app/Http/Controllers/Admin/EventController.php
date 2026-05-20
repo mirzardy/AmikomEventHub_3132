@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,11 +13,28 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $eventSearch = $request->input('event_search');
+        $categorySearch = $request->input('category_search');
+
         // Memakai relasi dan pengaturan limit paginasi (10 entri per halaman)
-        $events = \App\Models\Event::with('category')->latest()->paginate(10);
-        return view('admin.events.index', compact('events'));
+        $events = Event::with('category')
+            ->when($eventSearch, function ($query) use ($eventSearch) {
+                $query->where('title', 'LIKE', '%' . $eventSearch . '%');
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $categories = Category::withCount('events')
+            ->when($categorySearch, function ($query) use ($categorySearch) {
+                $query->where('name', 'LIKE', '%' . $categorySearch . '%');
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.events.index', compact('events', 'categories', 'eventSearch', 'categorySearch'));
     }
 
     /**
@@ -24,7 +42,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        $categories = \App\Models\Category::all();
+        $categories = Category::all();
         return view('admin.events.create', compact('categories'));
     }
 
@@ -71,7 +89,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        $categories = \App\Models\Category::all();
+        $categories = Category::all();
         return view('admin.events.edit', compact('event', 'categories'));
     }
 

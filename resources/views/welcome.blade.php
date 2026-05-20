@@ -112,7 +112,7 @@
                                     Rp {{ number_format($event->price, 0, ',', '.') }}
                                 </span>
 
-                                <a href="{{ url('event/' . $event->id) }}" class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
+                                <a href="{{ route('events.show', $event) }}" class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
                                     Lihat Detail
                                 </a>
                             </div>
@@ -120,5 +120,27 @@
                     </div>
                 @endforeach
             </div>
+    </section>
+
+    <section id="partners" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-3xl font-extrabold mb-2">Partner Kami</h2>
+                <p class="text-slate-500 font-medium">Daftar partner yang mendukung event terbaik di AmikomEventHub.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            @foreach ($partners as $partner)
+                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6 flex flex-col items-center text-center gap-4 hover:shadow-xl transition">
+                    <img
+                        src="{{ $partner->logo_url ?: 'https://placehold.co/200x200?text=Partner' }}"
+                        alt="{{ $partner->name }}"
+                        class="w-24 h-24 rounded-2xl object-cover border border-slate-100"
+                    >
+                    <h3 class="font-black text-slate-800 leading-snug">{{ $partner->name }}</h3>
+                </div>
+            @endforeach
+        </div>
     </section>
 @endsection
