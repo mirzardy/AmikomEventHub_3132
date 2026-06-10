@@ -7,10 +7,10 @@ use App\Http\Controllers\Controller;
 
 class EventController extends Controller
 {
-    function show(Event $event){
-        $event->load('category');
-
-        return view('event-detail', compact('event'));
+    public function show(\App\Models\Event $event)
+    {
+        $categories = \App\Models\Category::all();
+        return view('event-detail', compact('categories', 'event'));
     }
 
     function checkout(){

@@ -137,11 +137,9 @@
                             {{ $events->firstItem() + $index }}
                         </td>
                         <td class="px-8 py-6">
-                            @if($event->poster_path)
-                                <img src="{{ $event->poster_url }}" class="w-16 h-20 rounded-xl object-cover shadow-sm" alt="Poster">
-                            @else
-                                <img src="https://placehold.co/160x200?text=No+Image" class="w-16 h-20 rounded-xl object-cover shadow-sm">
-                            @endif
+                            <img src="{{ ($event->poster_path && Storage::disk('public')->exists($event->poster_path))
+                                ? asset('storage/' . $event->poster_path)
+                                 : 'https://placehold.co/16x20' }}" class="w-16 h-20 rounded-xl object-cover shadow-sm">
                         </td>
                         <td class="px-8 py-6">
                             <p class="font-black text-slate-800">{{ $event->title }}</p>

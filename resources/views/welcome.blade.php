@@ -81,12 +81,9 @@
                     <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden">
                         
                         <div class="relative overflow-hidden aspect-[3/4] bg-slate-100">
-                            <img 
-                                src="{{ $event->poster_url }}" 
+                            <img src="{{ $event->poster_path ? asset('storage/' . $event->poster_path) : 'https://placehold.co/200x600' }}"
                                 alt="{{ $event->title }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                onerror="this.onerror=null;this.src='https://via.placeholder.com/400x600?text=Harap+Ubah+Database';"
-                            >
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             
                             <div class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
                                 {{ $event->category->name }}
@@ -112,7 +109,7 @@
                                     Rp {{ number_format($event->price, 0, ',', '.') }}
                                 </span>
 
-                                <a href="{{ route('events.show', $event) }}" class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
+                                <a href="{{ route('events.show', $event->id) }}" class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">
                                     Lihat Detail
                                 </a>
                             </div>
