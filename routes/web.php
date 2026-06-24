@@ -14,7 +14,8 @@ use App\Http\Controllers\Admin\TransactionController;
 // ====================
 // User Routes
 // ====================
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
 Route::get('/event/{event}', [EventController::class, 'show'])
     ->name('events.show');
@@ -25,6 +26,14 @@ Route::get('/checkout/{event}', [CheckoutController::class, 'create'])
 
 Route::post('/checkout/{event}', [CheckoutController::class, 'store'])
     ->name('checkout.store');
+
+// Halaman pembayaran Midtrans
+Route::get('/payment/{order_id}', [CheckoutController::class, 'payment'])
+    ->name('checkout.payment');
+
+// Halaman sukses pembayaran
+Route::get('/success/{order_id}', [CheckoutController::class, 'success'])
+    ->name('checkout.success');
 
 Route::get('/my-ticket', [EventController::class, 'ticket'])
     ->name('ticket');
