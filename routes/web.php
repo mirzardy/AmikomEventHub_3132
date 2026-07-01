@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -34,6 +35,10 @@ Route::get('/payment/{order_id}', [CheckoutController::class, 'payment'])
 // Halaman sukses pembayaran
 Route::get('/success/{order_id}', [CheckoutController::class, 'success'])
     ->name('checkout.success');
+
+// Webhook/Callback Midtrans
+Route::post('/midtrans/callback', [MidtransWebhookController::class, 'handle'])
+    ->name('midtrans.callback');
 
 Route::get('/my-ticket', [EventController::class, 'ticket'])
     ->name('ticket');
