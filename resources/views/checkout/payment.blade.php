@@ -82,9 +82,26 @@
     };
 
     // Auto trigger popup pembayaran
-    window.onload = function () {
-        document.getElementById('pay-button').click();
-    };
+    document.getElementById('pay-button').addEventListener('click', function () {
+    if (typeof window.snap === 'undefined') {
+        alert('Midtrans Snap gagal dimuat. Periksa koneksi atau browser console.');
+        return;
+    }
+
+    window.snap.pay(@json($transaction->snap_token), {
+        onSuccess: function () {
+            window.location.href =
+                @json(route('checkout.success', $transaction->order_id));
+            },
+        onPending: function () {
+            window.location.href =
+                @json(route('checkout.success', $transaction->order_id));
+            },
+        onError: function () {
+            alert('Pembayaran gagal.');
+            }
+        });
+    });
 </script>
 
 <style>
