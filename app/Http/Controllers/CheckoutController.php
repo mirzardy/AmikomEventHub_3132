@@ -110,30 +110,69 @@ class CheckoutController extends Controller
     }
     public function success($order_id)
 {
-    // Mengambil daftar kategori untuk menu footer
+    // Mengambil daftar kategori untuk menu
     $categories = Category::all();
 
-    // Mengambil transaksi berdasarkan order ID
-    $transaction = Transaction::where('order_id', $order_id)
+    // Mengambil transaksi beserta data event
+    $transaction = Transaction::with('event')
+        ->where('order_id', $order_id)
         ->firstOrFail();
 
-    // Validasi status pembayaran asli dari Midtrans
+    // Konfigurasi Midtrans
     \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
     \Midtrans\Config::$isProduction = false;
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
 
     try {
-        $midtransStatus = \Midtrans\Transaction::status($order_id);
+        // Mengecek status transaksi langsung ke Midtrans
+        $status = \Midtrans\Transaction::status($order_id);
 
-        // Ubah status menjadi success jika pembayaran telah lunas
-        if (in_array(
-            $midtransStatus->transaction_status,
-            ['capture', 'settlement']
-        )) {
-            $transaction->update([
-                'status' => 'success',
-            ]);
+        if ($status) {
+
+            $transactionStatus = is_array($status)
+                ? ($status['transaction_status'] ?? '')
+                : ($status->transaction_status ?? '');
+
+            // Jika pembayaran berhasil
+            if (in_array($transactionStatus, ['settlement', 'capture'])) {
+
+                // Hanya diproses jika status lokal masih pending
+                if (strtolower($transaction->status) === 'pending') {
+
+                    $transaction->update([
+                        'status' => 'success',
+                    ]);
+
+                    // Kurangi stok tiket
+                    if ($transaction->event && $transaction->event->stock > 0) {
+
+                        $transaction->event->decrement('stock');
+
+                        // Kirim E-Ticket
+                        try {
+                            Mail::to($transaction->customer_email)
+                                ->send(new EventTicketMail($transaction));
+                        } catch (\Exception $e) {
+                            Log::error(
+                                'Gagal mengirim email E-Ticket secara manual: '
+                                . $e->getMessage()
+                            );
+                        }
+
+                    } else {
+
+                        Log::warning(
+                            'Stok tiket habis. Order ID: ' .
+                            $transaction->order_id
+                        );
+                    }
+                }
+            }
         }
+
     } catch (\Exception $e) {
+
         return redirect()
             ->route('home')
             ->with(
